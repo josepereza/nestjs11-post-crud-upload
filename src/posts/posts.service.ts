@@ -46,9 +46,12 @@ export class PostsService {
     updatePostDto: UpdatePostDto,
     imagePath?: string,
   ): Promise<Post> {
+    console.log(updatePostDto);
+    const miupdate = { ...updatePostDto, userId: +updatePostDto.userId! };
+    console.log(miupdate);
     const post = await this.findOne(id);
 
-    this.postsRepository.merge(post, updatePostDto);
+    this.postsRepository.merge(post, miupdate);
 
     if (imagePath) {
       post.imagePath = imagePath;

@@ -3,10 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Res,
+  Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -54,15 +54,25 @@ export class PostsController {
     return this.postsService.findOne(+id);
   }
 
-  @Patch(':id')
-  @UseInterceptors(FileInterceptor('image'))
+  @Put(':id')
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          cb(null, `${Date.now()}-${file.originalname}`);
+        },
+      }),
+    }),
+  )
   update(
     @Param('id') id: string,
     @Body() updatePostDto: UpdatePostDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    const imagePath = file ? file.path : null;
-    return this.postsService.update(+id, updatePostDto, imagePath!);
+    //const imagePath = file ? file.path : null;
+    const imageUrl = `http://localhost:3000/uploads/${file.filename}`;
+    return this.postsService.update(+id, updatePostDto, imageUrl);
   }
 
   @Delete(':id')
