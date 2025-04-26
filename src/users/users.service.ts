@@ -22,7 +22,7 @@ export class UsersService {
 
   async findOne(id: number): Promise<User> {
     const user = await this.usersRepository.findOne({
-      where: { id },
+      where: { user_ID: id },
       relations: ['posts'],
     });
     if (!user) {

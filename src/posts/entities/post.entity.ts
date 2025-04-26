@@ -30,9 +30,6 @@ export class Post {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_ID' })
   user: User;
-
-  @Column()
-  userId: number;
 }

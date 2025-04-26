@@ -1,10 +1,16 @@
 import { Post } from 'src/posts/entities/post.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  user_ID: number;
 
   @Column({ unique: true })
   username: string;
@@ -19,5 +25,6 @@ export class User {
   isActive: boolean;
 
   @OneToMany(() => Post, (post) => post.user)
+  @JoinColumn()
   posts: Post[];
 }
